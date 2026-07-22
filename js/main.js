@@ -351,3 +351,36 @@ document.querySelectorAll('.tit_card').forEach((card) => {
     })
   })
 });
+
+
+const stickyBox = document.querySelector('.sticky_box');
+const processCards = gsap.utils.toArray('.projects_all .card');
+
+processCards.forEach((card, index) => {
+  //카드 순서에 맞는 이미지 파일 경로를 만든다
+  const imgUrl = `asset/info${index + 1}.png`;
+
+  //카드가 화면 중앙에 들어오는 순간 감지
+  ScrollTrigger.create({
+    trigger: card,
+    start: 'top center',
+    end: 'bottom center',
+    onEnter:()=>changeBg(imgUrl),
+    onEnterBack:()=>changeBg(imgUrl),
+  });
+})
+
+//sticky 박스의 이미지를 바로 바꾸면 딱닥해서 살짝 줄였다가 다시 키우며 교체
+function changeBg(imgUrl) {
+  if (!stickyBox) return;
+
+  gsap.to(stickyBox, {
+    opacity: 0.72,
+    scale: 0.98,
+    duration: 0.2,
+    onComplete: () => {
+      stickyBox.style.backgroundImage = `url(${imgUrl})`;
+      gsap.to(stickyBox, { opacity: 1, scale: 1, duration: 0.45 });
+    }
+  })
+}
